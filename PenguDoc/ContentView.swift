@@ -194,7 +194,7 @@ struct CleanAndScanView: View {
 
 // MARK: - Screen 2: Home Page
 struct HomeView: View {
-    @AppStorage("hasSeenTutorial") var hasSeenTutorial: Bool = true
+    @AppStorage("hasSeenTutorial") var hasSeenTutorial: Bool = false
     @State private var paperHeightCm: Double = 2.0
     
     var currentState: PileState {
@@ -418,16 +418,16 @@ struct DocumentCard: View {
             Image(uiImage: doc.image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .frame(width: 120, height: 120) // Image is much bigger now
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             Spacer()
             Text(doc.title)
                 .font(.subheadline).bold()
                 .foregroundColor(.white)
                 .lineLimit(1)
         }
-        .padding()
-        .frame(width: 140, height: 130)
+        .padding(12)
+        .frame(width: 160, height: 170) // Overall card size increased to fit
         .background(Color.black.opacity(0.4))
         .cornerRadius(16)
     }
@@ -440,23 +440,23 @@ struct DocumentRow: View {
             Image(uiImage: doc.image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 60, height: 60)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .frame(width: 80, height: 80) // Image size increased here too
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(doc.title)
-                    .font(.subheadline).bold()
+                    .font(.headline).bold() // Bolder text to balance the bigger image
             }
             .padding(.leading, 8)
             
             Spacer()
             
             Text(doc.isPinned ? "Pinned" : "Document")
-                .font(.system(size: 8)).bold()
+                .font(.system(size: 10)).bold()
                 .foregroundColor(.white)
-                .padding(.horizontal, 8).padding(.vertical, 4)
+                .padding(.horizontal, 10).padding(.vertical, 6)
                 .background(doc.isPinned ? Color.blue : Color.gray)
-                .cornerRadius(4)
+                .cornerRadius(6)
         }
         .padding()
         .background(Color.white)
@@ -562,7 +562,6 @@ struct TutorialView: View {
         TabView {
             TutorialPage(title: "Welcome!", description: "Meet your friendly assistant who will help you organize your documents! If your documents pile up I won't be happy.", imageName: "penguin_happy")
             
-            // Scaled up angry penguin passing in the flag to show the floating icon
             TutorialPage(title: "The Problem", description: "As documents accumulate, it gets harder to keep track of everything. Use the scan feature to digitize your documents.", imageName: "penguin_angry", showScanIcon: true, imageSize: 360)
             
             VStack {
@@ -592,7 +591,6 @@ struct TutorialPage: View {
     let description: String
     let imageName: String
     
-    // Configurable layout properties for specific pages
     var showScanIcon: Bool = false
     var imageSize: CGFloat = 280
     
@@ -604,17 +602,16 @@ struct TutorialPage: View {
                 .background(Color.black.opacity(0.3)).cornerRadius(16).padding()
             Spacer()
             
-            // Horizontal stack places the icon perfectly at the end of the stick
             HStack(alignment: .center, spacing: 10) {
                 Image(imageName)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: imageSize) // Controlled by the parameter above
+                    .frame(height: imageSize)
                 
                 if showScanIcon {
                     ZStack {
                         Circle()
-                            .fill(.ultraThinMaterial) // Liquid Glass look
+                            .fill(.ultraThinMaterial)
                             .frame(width: 70, height: 70)
                             .shadow(color: .white.opacity(0.3), radius: 8, x: 0, y: 0)
                         
@@ -622,7 +619,6 @@ struct TutorialPage: View {
                             .font(.system(size: 30))
                             .foregroundColor(.white)
                     }
-                    // Adjusted coordinates to map precisely to the tip of the stick
                     .offset(x: -30, y: -50)
                 }
             }
